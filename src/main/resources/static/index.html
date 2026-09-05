@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Textra AI</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 600px;
+            margin: 80px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        input[type="file"] {
+            margin: 20px 0;
+        }
+
+        button {
+            background: #111827;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        #result {
+            margin-top: 25px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Textra AI</h1>
+
+    <p class="subtitle">
+        AI-powered document modification
+    </p>
+
+    <input type="file" id="fileInput">
+
+    <br>
+
+    <button onclick="uploadFile()">
+        Upload Document
+    </button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+    async function uploadFile() {
+
+        const fileInput = document.getElementById("fileInput");
+        const result = document.getElementById("result");
+
+        if (fileInput.files.length === 0) {
+            result.innerText = "Please select a file first.";
+            return;
+        }
+
+        const file = fileInput.files[0];
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        result.innerText = "Uploading...";
+
+        try {
+
+            const response = await fetch("/api/upload", {
+                method: "POST",
+                body: formData
+            });
+
+            const message = await response.text();
+
+            result.innerText = message;
+
+        } catch (error) {
+
+            result.innerText = "Upload failed.";
+
+            console.error(error);
+        }
+    }
+
+</script>
+
+</body>
+</html>
